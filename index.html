@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="es" class="overflow-hidden">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mis XV Años</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Tangerine:wght@400;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg-void:#680088;
+    --bg-void-2:#380655;
+    --purple:#5f0979;
+    --purple-deep:#38064e;
+    --magenta:#c026d3;
+    --pink-neon:#f472b6;
+    --red-cup:#dc2626;
+    --silver:#e9d5ff;
+  }
+  html{scroll-behavior:smooth;}
+  html.overflow-hidden, html.overflow-hidden body{overflow:hidden; height:100%;}
+  body{
+    background:var(--bg-void);
+    font-family:'Montserrat',sans-serif;
+    color:var(--silver);
+    overflow-x:hidden;
+    position:relative;
+  }
+  .font-script{font-family:'Tangerine',cursive;}
+  .font-display{font-family:'Cormorant Garamond',serif;}
+
+  section{scroll-snap-align:start; position:relative;}
+  .snap-container{scroll-snap-type:y proximity;}
+
+
+  /* ambient moving light like the reference photo */
+  .light-wash{
+    position:absolute;inset:0;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(192,38,212,0.35), transparent 45%),
+      radial-gradient(circle at 80% 30%, rgba(124,58,237,0.35), transparent 50%),
+      radial-gradient(circle at 50% 80%, rgba(244,114,182,0.25), transparent 50%);
+    animation:wash 19s ease-in-out infinite alternate;
+    filter:blur(10px);
+  }
+  @keyframes wash{
+    0%{transform:translate(0,0) scale(1);}
+    100%{transform:translate(3%,-4%) scale(1.08);}
+  }
+
+  .glow-text{
+    text-shadow:0 0 12px rgba(244,114,182,0.8), 0 0 40px rgba(192,38,212,0.5);
+  }
+
+  .balloon{
+    position:absolute;
+    border-radius:50% 50% 50% 50%/ 58% 58% 42% 42%;
+    animation:float 7s ease-in-out infinite;
+    opacity:0.85;
+  }
+  .balloon::after{
+    content:'';position:absolute;bottom:-26px;left:50%;
+    width:1px;height:28px;background:rgba(233,213,255,0.35);
+  }
+  @keyframes float{
+    0%,100%{transform:translateY(0) rotate(-2deg);}
+    50%{transform:translateY(-18px) rotate(2deg);}
+  }
+
+  .streamer{
+    position:absolute;width:3px;
+    background:repeating-linear-gradient(180deg, var(--magenta) 0 10px, var(--purple) 10px 20px);
+    border-radius:2px;
+    transform-origin:top center;
+    animation:sway 4s ease-in-out infinite;
+    opacity:0.6;
+  }
+  @keyframes sway{
+    0%,100%{transform:rotate(-4deg);}
+    50%{transform:rotate(4deg);}
+  }
+
+  .digit-box{
+    background:linear-gradient(160deg, rgba(124,58,237,0.25), rgba(192,38,212,0.15));
+    border:1px solid rgba(244,114,182,0.4);
+    box-shadow:0 0 25px rgba(192,38,212,0.35), inset 0 0 20px rgba(124,58,237,0.2);
+    backdrop-filter:blur(6px);
+  }
+
+  .bglam{
+    background:linear-gradient(90deg, var(--magenta), var(--purple-deep));
+    
+  }
+
+  .btn-glam{
+    background:linear-gradient(90deg, var(--magenta), var(--purple-deep));
+    box-shadow:0 0 25px rgba(192,38,212,0.6);
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .btn-glam:hover{transform:translateY(-2px) scale(1.02); box-shadow:0 0 40px rgba(244,114,182,0.75);}
+
+  .divider-fringe{
+    height:26px;
+    background-image:repeating-linear-gradient(90deg, var(--pink-neon) 0 2px, transparent 2px 12px);
+    opacity:0.5;
+  }
+
+  #confetti-canvas{position:fixed;inset:0;pointer-events:none;z-index:60;}
+
+  .music-btn{
+    box-shadow:0 0 18px rgba(244,114,182,0.6);
+  }
+  .music-bars span{
+    display:inline-block;width:3px;background:var(--pink-neon);margin:0 1px;
+    animation:bars 0.9s ease-in-out infinite;
+  }
+  .music-bars span:nth-child(2){animation-delay:.15s;}
+  .music-bars span:nth-child(3){animation-delay:.3s;}
+  @keyframes bars{0%,100%{height:4px;}50%{height:14px;}}
+  .paused .music-bars span{animation-play-state:paused; height:4px;}
+
+  ::selection{background:var(--magenta); color:white;}
+  input:focus{outline:none;}
+
+  /* ===== ENVELOPE INTRO ===== */
+  #envelope-intro{
+    position:fixed; inset:0; z-index:100;
+    background:radial-gradient(circle at 50% 40%, #241238, var(--bg-void) 70%);
+    display:flex; align-items:center; justify-content:center;
+    transition:opacity .9s ease;
+  }
+  #envelope-intro.fade-out{opacity:0; pointer-events:none;}
+
+  .envelope-scene{perspective:1400px;}
+  .envelope{
+    position:relative; width:min(78vw,300px); aspect-ratio:3/2; cursor:pointer;
+  }
+  .envelope-back{
+    position:absolute; inset:0; border-radius:8px;
+    background:linear-gradient(160deg, var(--purple-deep), var(--bg-void-2));
+    box-shadow:0 0 40px rgba(192,38,212,0.4);
+  }
+  .envelope-letter{
+    position:absolute; left:6%; right:6%; top:8%; bottom:8%;
+    background:linear-gradient(180deg,#fdf2ff,#f3e8ff);
+    border-radius:4px;
+    box-shadow:0 6px 20px rgba(0,0,0,.35);
+    display:flex; align-items:center; justify-content:center; text-align:center; padding:14px;
+    transform:translateY(0);
+    transition:transform 1s cubic-bezier(.2,.8,.2,1), opacity 1s ease;
+    z-index:1;
+  }
+  .envelope-letter p{color:#5b21b6; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:0.85rem; line-height:1.3;}
+  .envelope-letter .lname{font-family:'Tangerine',cursive; font-size:2rem; display:block; margin-top:4px; color:var(--magenta);}
+  .envelope-flap{
+    position:absolute; left:0; right:0; top:0; height:55%;
+    background:linear-gradient(160deg, var(--magenta), var(--purple));
+    clip-path:polygon(0 0, 100% 0, 50% 100%);
+    transform-origin:top center;
+    transform:rotateX(0deg);
+    transition:transform 1s cubic-bezier(.3,.7,.3,1);
+    z-index:3;
+    box-shadow:0 4px 14px rgba(0,0,0,.3);
+  }
+  .envelope-front{
+    position:absolute; left:0; right:0; bottom:0; height:62%;
+    background:linear-gradient(160deg, var(--purple), var(--purple-deep));
+    clip-path:polygon(0 100%, 100% 100%, 100% 0, 50% 45%, 0 0);
+    z-index:2;
+  }
+  .wax-seal{
+    position:absolute; top:38%; left:50%; transform:translate(-50%,-50%);
+    width:52px; height:52px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #f472b6, var(--red-cup) 70%);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Tangerine',cursive; font-size:1.7rem; color:#fff0f5;
+    box-shadow:0 3px 10px rgba(0,0,0,.4);
+    z-index:4;
+    transition:opacity .4s ease, transform .4s ease;
+  }
+  .envelope.open .envelope-flap{transform:rotateX(180deg);}
+  .envelope.open .wax-seal{opacity:0; transform:translate(-50%,-50%) scale(0.4);}
+  .envelope.open .envelope-letter{transform:translateY(-92%); z-index:5;}
+
+  .open-hint{
+    margin-top:2rem; text-align:center; 
+    color:#f5d0ea; letter-spacing:.3em; 
+    font-size:16px; text-transform:uppercase;
+    animation:pulseHint 1.8s ease-in-out infinite;
+  }
+  @keyframes pulseHint{0%,100%{opacity:.5;}50%{opacity:1;}}
+
+  #invitation-content{opacity:0; transition:opacity 1.1s ease;}
+  #invitation-content.visible{opacity:1;}
+
+  /* ===== ESTRELLAS AMBIENTALES (capa global) ===== */
+  #stars-layer{
+    position:fixed; inset:0; z-index:1; pointer-events:none; overflow:hidden;
+  }
+  .star{
+    position:absolute; border-radius:50%;
+    background:var(--silver);
+    animation:twinkle ease-in-out infinite;
+  }
+  @keyframes twinkle{
+    0%,100%{opacity:.15; transform:scale(.8);}
+    50%{opacity:.9; transform:scale(1.2);}
+  }
+
+  /* ===== CORAZONES / DESTELLOS FLOTANTES ===== */
+  .heart-decor{
+    position:absolute; pointer-events:none; opacity:.55;
+    animation:heartFloat 6s ease-in-out infinite;
+    filter:drop-shadow(0 0 6px rgba(244,114,182,.6));
+  }
+  @keyframes heartFloat{
+    0%,100%{transform:translateY(0) rotate(-6deg); opacity:.35;}
+    50%{transform:translateY(-22px) rotate(6deg); opacity:.75;}
+  }
+  .sparkle-decor{
+    position:absolute; pointer-events:none;
+    animation:sparklePop 2.6s ease-in-out infinite;
+  }
+  @keyframes sparklePop{
+    0%,100%{opacity:.2; transform:scale(.6) rotate(0deg);}
+    50%{opacity:1; transform:scale(1.15) rotate(90deg);}
+  }
+
+  /* ===== TEXTO "15" CON BRILLO EN MOVIMIENTO ===== */
+  .shimmer-text{
+    background:linear-gradient(100deg, #f9d9ef 20%, #ffffff 40%, var(--pink-neon) 50%, #f9d9ef 60%);
+    background-size:250% 100%;
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    animation:shimmer 4.5s linear infinite;
+  }
+  @keyframes shimmer{
+    0%{background-position:200% 0;}
+    100%{background-position:-200% 0;}
+  }
+
+  /* ===== ENTRADA ESCALONADA DEL HERO ===== */
+  .hero-reveal{
+    opacity:0; transform:translateY(24px);
+    transition:opacity .9s ease, transform .9s ease;
+  }
+  .hero-reveal.show{opacity:1; transform:translateY(0);}
+
+  /* ===== FONDO DE PUNTOS PARA RSVP ===== */
+  .dotted-void{
+    background-color:var(--purple-deep);
+    background-image:radial-gradient(rgba(244,114,182,0.35) 1.5px, transparent 1.5px),
+                      radial-gradient(rgba(192,38,212,0.25) 1.5px, transparent 1.5px);
+    background-size:26px 26px, 26px 26px;
+    background-position:0 0, 13px 13px;
+    animation:dotsDrift 14s linear infinite;
+  }
+  @keyframes dotsDrift{
+    0%{background-position:0 0, 13px 13px;}
+    100%{background-position:52px 26px, 65px 39px;}
+  }
+
+  /* ===== TARJETA DE VIDRIO PARA EL FORMULARIO RSVP ===== */
+  .rsvp-glass{
+    background:linear-gradient(165deg, rgba(124,58,237,0.22), rgba(56,6,78,0.55));
+    border:1px solid rgba(244,114,182,0.35);
+    box-shadow:0 0 45px rgba(192,38,212,0.35), inset 0 0 30px rgba(124,58,237,0.15);
+    backdrop-filter:blur(10px);
+  }
+
+  /* pulso continuo y suave en el botón principal del RSVP */
+  .btn-pulse{ animation:btnPulse 2.8s ease-in-out infinite; }
+  @keyframes btnPulse{
+    0%,100%{box-shadow:0 0 25px rgba(192,38,212,0.55);}
+    50%{box-shadow:0 0 42px rgba(244,114,182,0.85);}
+  }
+
+  /* pequeño "latido" en los dígitos del countdown al actualizarse */
+  .digit-tick{ animation:digitTick .5s ease; }
+  @keyframes digitTick{
+    0%{transform:scale(1);}
+    30%{transform:scale(1.14); text-shadow:0 0 18px rgba(244,114,182,.9);}
+    100%{transform:scale(1);}
+  }
+
+  /* hover en tarjetas de detalles */
+  .detail-card{ transition:transform .35s ease, box-shadow .35s ease, border-color .35s ease; }
+  .detail-card:hover{
+    transform:translateY(-4px) scale(1.015);
+    box-shadow:0 12px 34px rgba(192,38,212,0.35);
+    border-color:rgba(244,114,182,0.6);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .light-wash, .balloon, .streamer, .heart-decor, .sparkle-decor, .star,
+    .shimmer-text, .dotted-void, .btn-pulse, .digit-tick, .open-hint{ animation:none !important; }
+  }
+
+</style>
+</head>
+<body class="snap-container">
+
+<div id="stars-layer"></div>
+<canvas id="confetti-canvas"></canvas>
+
+<!-- ============ INTRO: CARTA ANIMADA ============ -->
+<!-- Un solo contenedor con un solo id, correctamente cerrado -->
+<div id="envelope-intro" class="relative w-full h-screen overflow-hidden">
+
+  <!-- Imagen superior: se desvanece hacia el centro. Reemplaza src por tu imagen real -->
+  <div class="absolute top-0 w-full z-0 [mask-image:linear-gradient(to_bottom,black_60%,transparent_100%)]">
+    <img src="src/buno.jpg" class="w-full object-cover" alt="imagen decorativa">
+  </div>
+
+  <!-- Imagen inferior: se desvanece hacia el centro -->
+  <div class="absolute bottom-0 w-full z-0 [mask-image:linear-gradient(to_top,black_30%,transparent_100%)]">
+    <img src="src/bdos.jpg" class="w-full h-50" alt="imagen decorativa">
+  </div>
+
+  <div class="envelope-scene relative z-10 flex flex-col items-center">
+    <div id="envelope" class="envelope">
+      <div class="envelope-back"></div>
+      <div class="envelope-letter">
+        <p>Estás cordialmente invitado(a) a celebrar<span class="lname">mis XV años</span></p>
+      </div>
+      <div class="envelope-front"></div>
+      <div class="envelope-flap"></div>
+      <div class="wax-seal">V</div>
+    </div>
+    <p class="open-hint">Toca el sobre para abrir tu invitación</p>
+  </div>
+</div>
+<!-- ============ FIN INTRO ============ -->
+
+<!-- botón de música -->
+<button id="music-toggle" class="paused music-btn fixed bottom-5 right-5 z-50 flex items-center gap-2 bg-black/50 border border-pink-300/40 text-pink-100 px-4 py-2 rounded-full text-xs tracking-wide backdrop-blur">
+  <span class="music-bars flex items-end h-4"><span></span><span></span><span></span></span>
+  <span id="music-label">Música</span>
+</button>
+<!--
+  🎵 CÓMO CAMBIAR LA MÚSICA POR UNA CANCIÓN ROMÁNTICA:
+  1) Entra a https://freepd.com/romantic.php (música 100% libre de derechos, sin necesidad de dar crédito).
+  2) Te recomiendo "Lovely Piano Song" de Rafael Krux (1:36, piano suave y romántico) o "Nostalgic Piano" (3:16).
+  3) Haz clic derecho sobre el botón de descarga de esa canción → "Copiar dirección del enlace".
+  4) Pega ese enlace reemplazando el "src" de abajo. Si el archivo pesa mucho, comprímelo primero
+     (recomendado: MP3 96–128kbps, recortado a 30-60s en loop) con https://www.freeconvert.com/mp3-compressor
+  Mientras tanto dejo una pista de piano de muestra (SoundHelix) para que puedas probar que el reproductor funciona.
+-->
+<audio id="bg-audio" loop preload="none">
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
+
+<div id="invitation-content">
+
+<!-- ================= HERO ================= -->
+<section class="relative min-h-screen bg-linear bglam flex flex-col items-center justify-center text-center px-6 overflow-hidden">
+  <div class="light-wash"></div>
+  <div class="absolute bottom-0 w-full z-0 [mask-image:linear-gradient(to_top,black_30%,transparent_100%)]">
+    <img src="src/btres.jpg" class="w-full h-50" alt="imagen decorativa">
+  </div>
+  <div class="absolute top-0 w-full z-0 [mask-image:linear-gradient(to_bottom,black_50%,transparent_100%)]">
+    <img src="src/bcuatro.png" class="w-full object-cover" alt="imagen decorativa">
+  </div>
+
+  <!-- destellos decorativos del hero -->
+  <span class="heart-decor text-2xl z-10" style="top:14%; left:9%; animation-delay:.1s;">💜</span>
+  <span class="sparkle-decor text-xl z-10" style="top:20%; right:12%; animation-delay:.9s;">✨</span>
+  <span class="sparkle-decor text-lg z-10" style="bottom:22%; left:14%; animation-delay:1.6s;">✨</span>
+  <span class="heart-decor text-xl z-10" style="bottom:16%; right:10%; animation-delay:1.1s;">💜</span>
+
+  <p class="hero-reveal relative z-10 tracking-[0.4em] text-xs md:text-sm text-white text-shadow-lg uppercase mb-4" style="transition-delay:.1s;">Se celebran mis</p>
+  <h1 class="hero-reveal relative z-10 font-script text-8xl md:text-[11rem] leading-none glow-text shimmer-text" style="transition-delay:.25s;">15</h1>
+  <h2 class="hero-reveal relative z-10 font-display italic text-3xl md:text-5xl mt-2 text-purple-100" style="transition-delay:.4s;">años</h2>
+
+  <p class="hero-reveal relative z-10 mt-8 font-display text-2xl md:text-3xl text-fuchsia-100" style="transition-delay:.55s;">El valluno</p>
+  <p class="hero-reveal relative z-10 mt-2 text-xs md:text-sm tracking-widest uppercase text-purple-200/70" style="transition-delay:.7s;">Te invito a bailar toda la noche conmigo</p>
+
+  <a href="#confirmar" class="hero-reveal relative z-10 mt-10 btn-glam text-white text-sm tracking-widest uppercase px-8 py-3 rounded-full" style="transition-delay:.85s;">
+    Confirmar asistencia
+  </a>
+
+ 
+</section>
+
+
+<div class="divider-fringe"></div>
+<!-- ================= COUNTDOWN ================= -->
+<section class="relative min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 py-12 sm:py-16 text-center overflow-hidden" 
+         style="background-image: url('src/bcinco.jpg'); background-size: cover; background-position: center;">
+  
+  <!-- Superposición para oscurecer la imagen y asegurar legibilidad del texto -->
+  <div class="absolute inset-0 bg-black/40 z-0"></div>
+
+  <!-- Elementos decorativos existentes (Globo y serpentinas) -->
+  <div class="balloon w-14 h-16 bg-purple-600/60" style="top:8%; left:10%; animation-delay:.3s;"></div>
+  <div class="balloon w-10 h-12 bg-fuchsia-500/60" style="top:14%; left:22%; animation-delay:1.1s;"></div>
+  <div class="balloon w-16 h-20 bg-purple-500/50" style="top:6%; right:14%; animation-delay:.7s;"></div>
+  <div class="balloon w-9 h-11 bg-pink-400/60" style="top:20%; right:24%; animation-delay:1.6s;"></div>
+  
+  
+  <!-- Títulos principales -->
+  <p class="relative z-10 tracking-[0.35em] text-xs md:text-sm text-fuchsia-200 uppercase mb-3">Falta muy poco</p>
+  <h3 class="relative z-10 font-display italic text-2xl sm:text-4xl md:text-5xl text-white mb-8 sm:mb-12 px-2 drop-shadow-lg">La cuenta regresiva ya empezó</h3>
+
+  <!-- CONTENEDOR DE LA CUENTA REGRESIVA (Tarjetas estilo Glassmorphism) -->
+  <div id="countdown" class="relative z-10 grid grid-cols-4 gap-3 sm:gap-4 md:gap-6 w-full max-w-xl mx-auto mb-10">
+    
+    <!-- Componente reutilizable para cada caja de dígito -->
+    <!-- Se ha añadido: bg-white/10 (fondo translúcido), backdrop-blur-md (efecto vidrio), border border-white/20 (borde sutil) -->
+    
+    <!-- Días -->
+    <div class="digit-box rounded-2xl py-5 text-center min-w-0 bg-white/10 backdrop-blur-md border border-white/20 shadow-xl">
+      <div id="cd-days" class="font-display text-white drop-shadow-md" style="font-size:clamp(1.8rem, 7vw, 3rem);">00</div>
+      <div class="text-[10px] tracking-widest uppercase text-purple-100/80 mt-1">días</div>
+    </div>
+    
+    <!-- Horas -->
+    <div class="digit-box rounded-2xl py-5 text-center min-w-0 bg-white/10 backdrop-blur-md border border-white/20 shadow-xl">
+      <div id="cd-hours" class="font-display text-white drop-shadow-md" style="font-size:clamp(1.8rem, 7vw, 3rem);">00</div>
+      <div class="text-[10px] tracking-widest uppercase text-purple-100/80 mt-1">horas</div>
+    </div>
+    
+    <!-- Minutos -->
+    <div class="digit-box rounded-2xl py-5 text-center min-w-0 bg-white/10 backdrop-blur-md border border-white/20 shadow-xl">
+      <div id="cd-min" class="font-display text-white drop-shadow-md" style="font-size:clamp(1.8rem, 7vw, 3rem);">00</div>
+      <div class="text-[10px] tracking-widest uppercase text-purple-100/80 mt-1">min</div>
+    </div>
+    
+    <!-- Segundos -->
+    <div class="digit-box rounded-2xl py-5 text-center min-w-0 bg-white/10 backdrop-blur-md border border-white/20 shadow-xl">
+      <div id="cd-sec" class="font-display text-white drop-shadow-md" style="font-size:clamp(1.8rem, 7vw, 3rem);">00</div>
+      <div class="text-[10px] tracking-widest uppercase text-purple-100/80 mt-1">seg</div>
+    </div>
+  </div>
+
+  <!-- NUEVO BLOQUE DE AGRADECIMIENTO (Estilo Glassmorphism) -->
+  <div class="relative z-10 w-full max-w-lg mx-auto px-6 py-6 bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl text-white/90 shadow-2xl">
+    <p class="text-sm md:text-lg italic font-medium mb-3">"Un agradecimiento infinito a mis papás y familia por su amor, apoyo incondicional y por hacer este sueño realidad."</p>
+    <p class="text-sm text-fuchsia-100 font-semibold">Con amor, El valluno</p>
+  </div>
+
+</section>
+
+<div class="divider-fringe"></div>
+
+<!-- ================= DETALLES ================= -->
+<section class="relative min-h-screen flex flex-col items-center justify-center px-4 py-16 overflow-hidden" 
+         style="background-image: url('src/bseis.jpg'); background-size: cover; background-position: center;">
+
+  <p class="relative z-10 tracking-[0.3em] text-[10px] text-fuchsia-200 uppercase mb-2">Detalles</p>
+  <h3 class="relative z-10 font-display italic text-3xl text-white mb-10">Guarda la fecha</h3>
+
+  <!-- Contenedor con las tarjetas -->
+  <div id="details-grid" class="relative z-10 grid gap-4 w-full max-w-sm">
+    
+    <!-- Componente de Tarjeta (Compacto) -->
+    <div class="scroll-fade detail-card flex items-center gap-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-4 transition-all duration-700 opacity-0 translate-y-10">
+      <div class="bg-fuchsia-500/20 p-3 rounded-xl">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-fuchsia-200"><rect width="18" height="18" x="3" y="4" rx="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+      </div>
+      <div>
+        <p class="text-[9px] tracking-widest uppercase text-purple-200/80">Fecha</p>
+        <p class="font-display text-sm text-white">12 de Diciembre, 2026</p>
+      </div>
+    </div>
+
+    <div class="scroll-fade detail-card flex items-center gap-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-4 transition-all duration-700 opacity-0 translate-y-10" style="transition-delay: 200ms;">
+      <div class="bg-purple-500/20 p-3 rounded-xl">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-purple-200"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <div>
+        <p class="text-[9px] tracking-widest uppercase text-purple-200/80">Hora</p>
+        <p class="font-display text-sm text-white">8:00 PM</p>
+      </div>
+    </div>
+
+    <div class="scroll-fade detail-card flex items-center gap-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-4 transition-all duration-700 opacity-0 translate-y-10" style="transition-delay: 400ms;">
+      <div class="bg-pink-500/20 p-3 rounded-xl">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-pink-200"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+      </div>
+      <div>
+        <p class="text-[9px] tracking-widest uppercase text-purple-200/80">Lugar</p>
+        <p class="font-display text-sm text-white">Salón Luna Violeta</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+<div class="divider-fringe"></div>
+
+<!-- ================= RSVP ================= -->
+
+<section id="confirmar" class="relative min-h-screen flex flex-col items-center justify-center px-4 py-16 overflow-hidden dotted-void">
+
+  <!-- viñeta para que los puntos no compitan con el borde de la tarjeta -->
+  <div class="absolute inset-0 z-0" style="background:radial-gradient(circle at 50% 50%, transparent 35%, rgba(56,6,78,0.75) 100%);"></div>
+
+  <!-- destellos y corazones decorativos -->
+  <span class="heart-decor text-2xl" style="top:10%; left:8%; animation-delay:.2s;">💜</span>
+  <span class="heart-decor text-xl" style="top:18%; right:10%; animation-delay:1.4s;">💜</span>
+  <span class="heart-decor text-lg" style="bottom:14%; left:12%; animation-delay:.8s;">✨</span>
+  <span class="sparkle-decor text-lg" style="top:30%; right:16%; animation-delay:.5s;">✨</span>
+  <span class="sparkle-decor text-base" style="bottom:22%; right:8%; animation-delay:1.9s;">✨</span>
+
+  <div id="rsvp-form-wrap" class="scroll-fade relative z-10 w-full max-w-md rsvp-glass rounded-[2rem] px-6 py-10 sm:px-10 sm:py-12 text-center transition-all duration-700 opacity-0 translate-y-10">
+    <p class="tracking-[0.35em] text-xs md:text-sm text-fuchsia-200/80 uppercase mb-3">RSVP</p>
+    <h3 class="font-display italic text-3xl md:text-5xl text-pink-100 mb-10">Confirma tu asistencia</h3>
+
+    <form id="rsvp-form" class="flex flex-col gap-4">
+      <input
+        id="guest-name"
+        type="text"
+        required
+        placeholder="Nombre completo"
+        class="digit-box rounded-full px-6 py-4 text-center text-white placeholder-purple-200/50 text-sm md:text-base"
+      >
+      <button type="submit" class="btn-glam btn-pulse text-white text-sm tracking-widest uppercase px-8 py-4 rounded-full">
+        Guardar mi lugar
+      </button>
+    </form>
+  </div>
+
+  <div id="rsvp-success" class="relative z-10 hidden rsvp-glass rounded-[2rem] px-6 py-10 sm:px-10 sm:py-12 text-center max-w-md w-full">
+    <p class="tracking-[0.35em] text-xs md:text-sm text-fuchsia-200/80 uppercase mb-3">¡Todo listo!</p>
+    <h3 class="font-display italic text-3xl md:text-5xl text-pink-100 mb-4">Gracias, <span id="success-name" class="font-script text-6xl align-middle"></span></h3>
+    <p class="text-purple-100/80 max-w-sm mx-auto">Tu lugar en la pista quedó confirmado. Nos vemos el 12 de diciembre para celebrar toda la noche 💜</p>
+  </div>
+</section>
+
+<footer class="relative py-10 text-center text-purple-300/40 text-xs tracking-widest uppercase">
+  Con amor, Valluno· Mis 15 años
+</footer>
+
+</div><!-- /invitation-content -->
+
+<script>
+  /* ============ ESTRELLAS AMBIENTALES ============ */
+  (function generateStars(){
+    const layer = document.getElementById('stars-layer');
+    const total = 46;
+    let html = '';
+    for(let i=0;i<total;i++){
+      const size = (Math.random()*2 + 1).toFixed(1);
+      const top = (Math.random()*100).toFixed(1);
+      const left = (Math.random()*100).toFixed(1);
+      const dur = (Math.random()*3 + 2.5).toFixed(1);
+      const delay = (Math.random()*4).toFixed(1);
+      html += `<span class="star" style="width:${size}px;height:${size}px;top:${top}%;left:${left}%;animation-duration:${dur}s;animation-delay:${delay}s;"></span>`;
+    }
+    layer.innerHTML = html;
+  })();
+
+  /* ============ COUNTDOWN (con "latido" al actualizar cada dígito) ============ */
+  const eventDate = new Date('2026-12-12T20:00:00').getTime();
+  const cdEls = {
+    days: document.getElementById('cd-days'),
+    hours: document.getElementById('cd-hours'),
+    min: document.getElementById('cd-min'),
+    sec: document.getElementById('cd-sec')
+  };
+  const cdPrev = { days:null, hours:null, min:null, sec:null };
+
+  function tick(el, key, value){
+    const formatted = String(value).padStart(2,'0');
+    if(cdPrev[key] !== formatted){
+      cdPrev[key] = formatted;
+      el.textContent = formatted;
+      el.classList.remove('digit-tick');
+      void el.offsetWidth; // reinicia la animación
+      el.classList.add('digit-tick');
+    }
+  }
+
+  function updateCountdown(){
+    const now = Date.now();
+    const diff = Math.max(0, eventDate - now);
+    const days = Math.floor(diff / (1000*60*60*24));
+    const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+    const mins = Math.floor((diff % (1000*60*60)) / (1000*60));
+    const secs = Math.floor((diff % (1000*60)) / 1000);
+    tick(cdEls.days, 'days', days);
+    tick(cdEls.hours, 'hours', hours);
+    tick(cdEls.min, 'min', mins);
+    tick(cdEls.sec, 'sec', secs);
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  /* ============ REVELADO POR SCROLL (tarjetas de detalles + tarjeta RSVP) ============ */
+  const scrollFadeCards = document.querySelectorAll('.scroll-fade');
+  const cardsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('opacity-100', 'translate-y-0');
+        cardsObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+  scrollFadeCards.forEach(card => cardsObserver.observe(card));
+
+  /* ============ MUSIC TOGGLE ============ */
+  const audio = document.getElementById('bg-audio');
+  const musicBtn = document.getElementById('music-toggle');
+  const musicLabel = document.getElementById('music-label');
+  audio.volume = 0.55;
+
+  function setMusicUI(playing){
+    if(playing){
+      musicBtn.classList.remove('paused');
+      musicLabel.textContent = 'Sonando';
+    } else {
+      musicBtn.classList.add('paused');
+      musicLabel.textContent = 'Música';
+    }
+  }
+
+  // Los navegadores bloquean el audio con sonido si no hubo antes un clic del usuario.
+  // Se intenta un autoplay silencioso apenas carga la página (algunos navegadores sí lo permiten);
+  // si funciona, se sube el volumen para que suene "automática" sin esperar al sobre.
+  audio.muted = true;
+  audio.play().then(() => {
+    audio.muted = false;
+    setMusicUI(true);
+  }).catch(() => {
+    // el navegador lo bloqueó: sonará en cuanto la persona toque el sobre (ver más abajo)
+    setMusicUI(false);
+  });
+
+  musicBtn.addEventListener('click', () => {
+    if(audio.paused){
+      audio.muted = false;
+      audio.play().then(()=>setMusicUI(true)).catch(()=>setMusicUI(false));
+    } else {
+      audio.pause();
+      setMusicUI(false);
+    }
+  });
+
+  /* ============ INTRO: SOBRE / CARTA ============ */
+  const envelope = document.getElementById('envelope');
+  const introOverlay = document.getElementById('envelope-intro');
+  const invitationContent = document.getElementById('invitation-content');
+  const htmlEl = document.documentElement;
+
+  let opened = false;
+  envelope.addEventListener('click', () => {
+    if(opened) return;
+    opened = true;
+
+    envelope.classList.add('open');
+
+    // gesto del usuario: garantiza música con sonido (requisito de autoplay del navegador)
+    audio.muted = false;
+    audio.play().then(()=>setMusicUI(true)).catch(()=>setMusicUI(false));
+
+    setTimeout(() => {
+      introOverlay.classList.add('fade-out');
+      htmlEl.classList.remove('overflow-hidden');
+      invitationContent.classList.add('visible');
+      setTimeout(() => { introOverlay.style.display = 'none'; }, 1000);
+
+      // entrada escalonada del hero
+      document.querySelectorAll('.hero-reveal').forEach(el => el.classList.add('show'));
+    }, 1300);
+  });
+
+  /* ============ PARALLAX AL HACER SCROLL ============ */
+
+  /* ============ RSVP + CONFETTI/SERPENTINA ============ */
+  const form = document.getElementById('rsvp-form');
+  const formWrap = document.getElementById('rsvp-form-wrap');
+  const successWrap = document.getElementById('rsvp-success');
+  const successName = document.getElementById('success-name');
+  const confirmedGuests = [];
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = document.getElementById('guest-name').value.trim();
+    if(!name) return;
+    confirmedGuests.push(name);
+    successName.textContent = name;
+    formWrap.classList.add('hidden');
+    successWrap.classList.remove('hidden');
+    launchConfetti();
+  });
+
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx = canvas.getContext('2d');
+  function resizeCanvas(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  const palette = ['#7c3aed', '#c026d3', '#f472b6', '#e9d5ff', '#dc2626'];
+
+  function launchConfetti(){
+    const pieces = [];
+    const total = 160;
+    for(let i=0;i<total;i++){
+      const isStreamer = Math.random() < 0.25;
+      pieces.push({
+        x: Math.random() * canvas.width,
+        y: -20 - Math.random()*canvas.height*0.3,
+        w: isStreamer ? 4 : (4 + Math.random()*6),
+        h: isStreamer ? 18 + Math.random()*24 : (8 + Math.random()*6),
+        color: palette[Math.floor(Math.random()*palette.length)],
+        rot: Math.random()*Math.PI*2,
+        rotSpeed: (Math.random()-0.5) * 0.2,
+        speedY: 2 + Math.random()*3,
+        speedX: (Math.random()-0.5) * 2,
+        streamer: isStreamer,
+        life: 0,
+        maxLife: 260 + Math.random()*120
+      });
+    }
+    let frame = 0;
+    const maxFrames = 380;
+    function animate(){
+      frame++;
+      ctx.clearRect(0,0,canvas.width, canvas.height);
+      let alive = false;
+      pieces.forEach(p => {
+        if(p.life > p.maxLife) return;
+        alive = true;
+        p.life++;
+        p.y += p.speedY;
+        p.x += p.speedX + Math.sin(p.life*0.05)*0.6;
+        p.rot += p.rotSpeed;
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot);
+        ctx.fillStyle = p.color;
+        if(p.streamer){ ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h); }
+        else { ctx.beginPath(); ctx.ellipse(0,0,p.w/2,p.h/2,0,0,Math.PI*2); ctx.fill(); }
+        ctx.restore();
+      });
+      if(alive && frame < maxFrames){ requestAnimationFrame(animate); }
+      else { ctx.clearRect(0,0,canvas.width, canvas.height); }
+    }
+    animate();
+  }
+</script>
+
+</body>
+</html>
