@@ -292,9 +292,61 @@
     border-color:rgba(244,114,182,0.6);
   }
 
+  /* ===== LEGIBILIDAD DE TEXTO SOBRE FONDOS/IMÁGENES OSCURAS ===== */
+  .text-crisp{
+    text-shadow:0 2px 10px rgba(0,0,0,.6), 0 1px 4px rgba(0,0,0,.85);
+  }
+  .text-panel{
+    background:rgba(18,4,30,0.55);
+    backdrop-filter:blur(3px);
+    border-radius:1rem;
+  }
+  .overlay-dark{
+    position:absolute; inset:0; z-index:0;
+    background:linear-gradient(180deg, rgba(15,3,26,.55), rgba(15,3,26,.35) 40%, rgba(15,3,26,.65));
+  }
+
+  /* ===== REVELADO SUAVE AL HACER SCROLL (para texto) ===== */
+  .fade-reveal{
+    opacity:0; transform:translateY(18px);
+    transition:opacity .8s ease, transform .8s ease;
+  }
+  .fade-reveal.in-view{ opacity:1; transform:translateY(0); }
+
+  /* cursor parpadeante mientras se "escribe" el texto tipo máquina */
+  .type-target{ position:relative; }
+  .type-target.typing::after{
+    content:'';
+    display:inline-block;
+    width:2px; height:0.85em;
+    margin-left:4px;
+    background:var(--pink-neon);
+    vertical-align:-0.1em;
+    animation:caretBlink .8s step-end infinite;
+  }
+  @keyframes caretBlink{ 0%,100%{opacity:1;} 50%{opacity:0;} }
+
+  /* ===== INDICADOR "EN VIVO" DEL COUNTDOWN ===== */
+  .live-dot{
+    width:8px; height:8px; border-radius:50%;
+    background:#f472b6;
+    box-shadow:0 0 8px rgba(244,114,182,.9);
+    animation:liveBlink 1s ease-in-out infinite;
+  }
+  @keyframes liveBlink{
+    0%,100%{opacity:1; transform:scale(1);}
+    50%{opacity:.3; transform:scale(.7);}
+  }
+  .cd-live-ring{ animation:ringPulse 2s ease-in-out infinite; }
+  @keyframes ringPulse{
+    0%,100%{box-shadow:0 0 25px rgba(192,38,212,0.35), inset 0 0 20px rgba(124,58,237,0.2), 0 0 0 0 rgba(244,114,182,.55);}
+    50%{box-shadow:0 0 25px rgba(192,38,212,0.35), inset 0 0 20px rgba(124,58,237,0.2), 0 0 0 7px rgba(244,114,182,0);}
+  }
+
   @media (prefers-reduced-motion: reduce){
     .light-wash, .balloon, .streamer, .heart-decor, .sparkle-decor, .star,
-    .shimmer-text, .dotted-void, .btn-pulse, .digit-tick, .open-hint{ animation:none !important; }
+    .shimmer-text, .dotted-void, .btn-pulse, .digit-tick, .open-hint,
+    .fade-reveal, .live-dot, .cd-live-ring, .type-target.typing::after{ animation:none !important; }
   }
 
 </style>
@@ -348,7 +400,7 @@
   Mientras tanto dejo una pista de piano de muestra (SoundHelix) para que puedas probar que el reproductor funciona.
 -->
 <audio id="bg-audio" loop preload="none">
-  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+  <source src="src/music.mp4" type="audio/mpeg">
 </audio>
 
 <div id="invitation-content">
@@ -360,8 +412,9 @@
     <img src="src/btres.jpg" class="w-full h-50" alt="imagen decorativa">
   </div>
   <div class="absolute top-0 w-full z-0 [mask-image:linear-gradient(to_bottom,black_50%,transparent_100%)]">
-    <img src="src/bcuatro.png" class="w-full object-cover" alt="imagen decorativa">
+    <img src="src/imguno.jpeg" class="w-full object-cover" alt="imagen decorativa">
   </div>
+  <div class="overlay-dark"></div>
 
   <!-- destellos decorativos del hero -->
   <span class="heart-decor text-2xl z-10" style="top:14%; left:9%; animation-delay:.1s;">💜</span>
@@ -369,12 +422,12 @@
   <span class="sparkle-decor text-lg z-10" style="bottom:22%; left:14%; animation-delay:1.6s;">✨</span>
   <span class="heart-decor text-xl z-10" style="bottom:16%; right:10%; animation-delay:1.1s;">💜</span>
 
-  <p class="hero-reveal relative z-10 tracking-[0.4em] text-xs md:text-sm text-white text-shadow-lg uppercase mb-4" style="transition-delay:.1s;">Se celebran mis</p>
-  <h1 class="hero-reveal relative z-10 font-script text-8xl md:text-[11rem] leading-none glow-text shimmer-text" style="transition-delay:.25s;">15</h1>
-  <h2 class="hero-reveal relative z-10 font-display italic text-3xl md:text-5xl mt-2 text-purple-100" style="transition-delay:.4s;">años</h2>
+  <p class="hero-reveal text-crisp relative z-10 tracking-[0.4em] text-sm md:text-sm text-white uppercase mb-4" style="transition-delay:.1s;">Se celebran mis</p>
+  <h1 class="hero-reveal relative z-10 font-script text-9xl md:text-[11rem] leading-none glow-text shimmer-text" style="transition-delay:.25s;">15</h1>
+  <h2 class="hero-reveal text-crisp relative z-10 font-display italic text-4xl md:text-5xl mt-2 text-white" style="transition-delay:.4s;">años</h2>
 
-  <p class="hero-reveal relative z-10 mt-8 font-display text-2xl md:text-3xl text-fuchsia-100" style="transition-delay:.55s;">El valluno</p>
-  <p class="hero-reveal relative z-10 mt-2 text-xs md:text-sm tracking-widest uppercase text-purple-200/70" style="transition-delay:.7s;">Te invito a bailar toda la noche conmigo</p>
+  <p class="hero-reveal text-crisp relative z-10 mt-6 font-display text-2xl md:text-3xl text-white" style="transition-delay:.55s;">LUCIANA GREIS</p>
+  <p class="hero-reveal text-crisp relative z-10 mt-1 text-sm md:text-sm tracking-widest uppercase text-purple-100" style="transition-delay:.7s;">Te invito a bailar toda la noche conmigo</p>
 
   <a href="#confirmar" class="hero-reveal relative z-10 mt-10 btn-glam text-white text-sm tracking-widest uppercase px-8 py-3 rounded-full" style="transition-delay:.85s;">
     Confirmar asistencia
@@ -387,10 +440,10 @@
 <div class="divider-fringe"></div>
 <!-- ================= COUNTDOWN ================= -->
 <section class="relative min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 py-12 sm:py-16 text-center overflow-hidden" 
-         style="background-image: url('src/bcinco.jpg'); background-size: cover; background-position: center;">
+         style="background-image: url('src/imgdos.jpg'); background-size: cover; background-position: center;">
   
   <!-- Superposición para oscurecer la imagen y asegurar legibilidad del texto -->
-  <div class="absolute inset-0 bg-black/40 z-0"></div>
+  <div class="absolute inset-0 bg-black/55 z-0"></div>
 
   <!-- Elementos decorativos existentes (Globo y serpentinas) -->
   <div class="balloon w-14 h-16 bg-purple-600/60" style="top:8%; left:10%; animation-delay:.3s;"></div>
@@ -400,8 +453,11 @@
   
   
   <!-- Títulos principales -->
-  <p class="relative z-10 tracking-[0.35em] text-xs md:text-sm text-fuchsia-200 uppercase mb-3">Falta muy poco</p>
-  <h3 class="relative z-10 font-display italic text-2xl sm:text-4xl md:text-5xl text-white mb-8 sm:mb-12 px-2 drop-shadow-lg">La cuenta regresiva ya empezó</h3>
+  <p class="fade-reveal text-crisp relative z-10 tracking-[0.35em] text-xs md:text-sm text-fuchsia-200 uppercase mb-3">Falta muy poco</p>
+  <h3 class="type-target text-crisp relative z-10 font-display text-3xl sm:text-4xl md:text-5xl text-white mb-6 px-2" data-text="La cuenta regresiva ya empezó">La cuenta regresiva ya empezó</h3>
+  <p class="fade-reveal relative z-10 flex items-center justify-center gap-2 text-[11px] tracking-[0.3em] uppercase text-pink-200/90 mb-8 sm:mb-12">
+    <span class="live-dot"></span> Actualizando en tiempo real
+  </p>
 
   <!-- CONTENEDOR DE LA CUENTA REGRESIVA (Tarjetas estilo Glassmorphism) -->
   <div id="countdown" class="relative z-10 grid grid-cols-4 gap-3 sm:gap-4 md:gap-6 w-full max-w-xl mx-auto mb-10">
@@ -428,16 +484,16 @@
     </div>
     
     <!-- Segundos -->
-    <div class="digit-box rounded-2xl py-5 text-center min-w-0 bg-white/10 backdrop-blur-md border border-white/20 shadow-xl">
+    <div class="digit-box cd-live-ring rounded-2xl py-5 text-center min-w-0 bg-white/10 backdrop-blur-md border border-white/20 shadow-xl">
       <div id="cd-sec" class="font-display text-white drop-shadow-md" style="font-size:clamp(1.8rem, 7vw, 3rem);">00</div>
       <div class="text-[10px] tracking-widest uppercase text-purple-100/80 mt-1">seg</div>
     </div>
   </div>
 
   <!-- NUEVO BLOQUE DE AGRADECIMIENTO (Estilo Glassmorphism) -->
-  <div class="relative z-10 w-full max-w-lg mx-auto px-6 py-6 bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl text-white/90 shadow-2xl">
-    <p class="text-sm md:text-lg italic font-medium mb-3">"Un agradecimiento infinito a mis papás y familia por su amor, apoyo incondicional y por hacer este sueño realidad."</p>
-    <p class="text-sm text-fuchsia-100 font-semibold">Con amor, El valluno</p>
+  <div class="fade-reveal relative z-10 w-full max-w-lg mx-auto px-6 py-6 bg-black/40 backdrop-blur-sm border border-white/15 rounded-3xl text-white shadow-2xl">
+    <p class="text-crisp text-sm md:text-lg italic font-medium mb-3">"Un agradecimiento infinito a mis papás y familia por su amor, apoyo incondicional y por hacer este sueño realidad."</p>
+    <p class="text-crisp text-sm text-fuchsia-100 font-semibold">Con amor, El valluno</p>
   </div>
 
 </section>
@@ -446,42 +502,45 @@
 
 <!-- ================= DETALLES ================= -->
 <section class="relative min-h-screen flex flex-col items-center justify-center px-4 py-16 overflow-hidden" 
-         style="background-image: url('src/bseis.jpg'); background-size: cover; background-position: center;">
+         style="background-image: url('src/imgcuatro.jpg'); background-size: cover; background-position: center;">
 
-  <p class="relative z-10 tracking-[0.3em] text-[10px] text-fuchsia-200 uppercase mb-2">Detalles</p>
-  <h3 class="relative z-10 font-display italic text-3xl text-white mb-10">Guarda la fecha</h3>
+  <div class="absolute inset-0 bg-black/55 z-0"></div>
 
+  <p class="fade-reveal text-crisp relative z-10 tracking-[0.3em] text-[10px] text-yellow-300 uppercase mb-2">Detalles</p>
+  <h3 class="type-target text-crisp relative z-10 font-display italic text-3xl text-white mb-2" data-text="Guarda la fecha">Guarda la fecha</h3>
+  <h3 class="fade-reveal text-crisp relative z-10 font-display italic text-2xl text-pink-200 mb-10">Temática EUPHORIA</h3>
   <!-- Contenedor con las tarjetas -->
   <div id="details-grid" class="relative z-10 grid gap-4 w-full max-w-sm">
     
     <!-- Componente de Tarjeta (Compacto) -->
-    <div class="scroll-fade detail-card flex items-center gap-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-4 transition-all duration-700 opacity-0 translate-y-10">
-      <div class="bg-fuchsia-500/20 p-3 rounded-xl">
+    <div class="scroll-fade detail-card flex items-center gap-4 bg-black/45 backdrop-blur-md border border-white/20 rounded-2xl p-4 transition-all duration-700 opacity-0 translate-y-10">
+      <div class="bg-fuchsia-500/25 p-3 rounded-xl">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-fuchsia-200"><rect width="18" height="18" x="3" y="4" rx="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
       </div>
       <div>
-        <p class="text-[9px] tracking-widest uppercase text-purple-200/80">Fecha</p>
-        <p class="font-display text-sm text-white">12 de Diciembre, 2026</p>
+        <p class="text-[9px] tracking-widest uppercase text-purple-200">Fecha</p>
+        <p class="text-crisp font-display text-sm text-white">24 de Julio, 2026</p>
       </div>
     </div>
 
-    <div class="scroll-fade detail-card flex items-center gap-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-4 transition-all duration-700 opacity-0 translate-y-10" style="transition-delay: 200ms;">
-      <div class="bg-purple-500/20 p-3 rounded-xl">
+    <div class="scroll-fade detail-card flex items-center gap-4 bg-black/45 backdrop-blur-md border border-white/20 rounded-2xl p-4 transition-all duration-700 opacity-0 translate-y-10" style="transition-delay: 200ms;">
+      <div class="bg-purple-500/25 p-3 rounded-xl">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-purple-200"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
       </div>
       <div>
-        <p class="text-[9px] tracking-widest uppercase text-purple-200/80">Hora</p>
-        <p class="font-display text-sm text-white">8:00 PM</p>
+        <p class="text-[9px] tracking-widest uppercase text-purple-200">Hora</p>
+        <p class="text-crisp font-display text-sm text-white">8:00 PM</p>
       </div>
     </div>
 
-    <div class="scroll-fade detail-card flex items-center gap-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-4 transition-all duration-700 opacity-0 translate-y-10" style="transition-delay: 400ms;">
-      <div class="bg-pink-500/20 p-3 rounded-xl">
+    <div class="scroll-fade detail-card flex items-center gap-4 bg-black/45 backdrop-blur-md border border-white/20 rounded-2xl p-4 transition-all duration-700 opacity-0 translate-y-10" style="transition-delay: 400ms;">
+      <div class="bg-pink-500/25 p-3 rounded-xl">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-pink-200"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
       </div>
       <div>
-        <p class="text-[9px] tracking-widest uppercase text-purple-200/80">Lugar</p>
-        <p class="font-display text-sm text-white">Salón Luna Violeta</p>
+        <p class="text-[9px] tracking-widest uppercase text-purple-200">Lugar</p>
+        <p class="text-crisp font-display text-sm text-white">Av. Panamericana frente a la fabrica de calaminas, 
+          quinta entrada a Paititi en el restaurante "el Valluno"</p>
       </div>
     </div>
 
@@ -504,8 +563,9 @@
   <span class="sparkle-decor text-base" style="bottom:22%; right:8%; animation-delay:1.9s;">✨</span>
 
   <div id="rsvp-form-wrap" class="scroll-fade relative z-10 w-full max-w-md rsvp-glass rounded-[2rem] px-6 py-10 sm:px-10 sm:py-12 text-center transition-all duration-700 opacity-0 translate-y-10">
-    <p class="tracking-[0.35em] text-xs md:text-sm text-fuchsia-200/80 uppercase mb-3">RSVP</p>
-    <h3 class="font-display italic text-3xl md:text-5xl text-pink-100 mb-10">Confirma tu asistencia</h3>
+    <p class="fade-reveal text-crisp tracking-[0.35em] text-xs md:text-sm text-fuchsia-200 uppercase mb-3">RSVP</p>
+    <h3 class="type-target text-crisp font-display italic text-3xl md:text-5xl text-white mb-4" data-text="Confirma tu asistencia">Confirma tu asistencia</h3>
+    <p class="fade-reveal text-crisp text-xs md:text-sm text-purple-100 mb-8 max-w-xs mx-auto">Escribe tu nombre completo: al confirmar se abrirá WhatsApp para avisarme directamente 💜</p>
 
     <form id="rsvp-form" class="flex flex-col gap-4">
       <input
@@ -513,18 +573,21 @@
         type="text"
         required
         placeholder="Nombre completo"
-        class="digit-box rounded-full px-6 py-4 text-center text-white placeholder-purple-200/50 text-sm md:text-base"
+        class="digit-box rounded-full px-6 py-4 text-center text-white placeholder-purple-200/60 text-sm md:text-base"
       >
       <button type="submit" class="btn-glam btn-pulse text-white text-sm tracking-widest uppercase px-8 py-4 rounded-full">
-        Guardar mi lugar
+        Confirmar y avisar por WhatsApp
       </button>
     </form>
   </div>
 
   <div id="rsvp-success" class="relative z-10 hidden rsvp-glass rounded-[2rem] px-6 py-10 sm:px-10 sm:py-12 text-center max-w-md w-full">
-    <p class="tracking-[0.35em] text-xs md:text-sm text-fuchsia-200/80 uppercase mb-3">¡Todo listo!</p>
-    <h3 class="font-display italic text-3xl md:text-5xl text-pink-100 mb-4">Gracias, <span id="success-name" class="font-script text-6xl align-middle"></span></h3>
-    <p class="text-purple-100/80 max-w-sm mx-auto">Tu lugar en la pista quedó confirmado. Nos vemos el 12 de diciembre para celebrar toda la noche 💜</p>
+    <p class="text-crisp tracking-[0.35em] text-xs md:text-sm text-fuchsia-200 uppercase mb-3">¡Todo listo!</p>
+    <h3 class="text-crisp font-display italic text-3xl md:text-5xl text-white mb-4">Gracias, <span id="success-name" class="font-script text-6xl align-middle"></span></h3>
+    <p class="text-crisp text-purple-100 max-w-sm mx-auto mb-6">Tu lugar en la pista quedó confirmado. Nos vemos el 24 de julio para celebrar toda la noche 💜</p>
+    <a id="whatsapp-link" href="#" target="_blank" rel="noopener" class="btn-glam inline-block text-white text-xs tracking-widest uppercase px-6 py-3 rounded-full">
+      Si no se abrió, toca aquí para enviar por WhatsApp
+    </a>
   </div>
 </section>
 
@@ -552,7 +615,7 @@
   })();
 
   /* ============ COUNTDOWN (con "latido" al actualizar cada dígito) ============ */
-  const eventDate = new Date('2026-12-12T20:00:00').getTime();
+  const eventDate = new Date('2026-07-24T20:00:00').getTime();
   const cdEls = {
     days: document.getElementById('cd-days'),
     hours: document.getElementById('cd-hours'),
@@ -598,6 +661,45 @@
     });
   }, { threshold: 0.2 });
   scrollFadeCards.forEach(card => cardsObserver.observe(card));
+
+  /* ============ REVELADO DE TEXTO TIPO MÁQUINA DE ESCRIBIR AL HACER SCROLL ============ */
+  function typewriterReveal(el, speed = 42){
+    const text = el.getAttribute('data-text') || el.textContent;
+    el.textContent = '';
+    el.classList.add('typing');
+    let i = 0;
+    (function step(){
+      if(i <= text.length){
+        el.textContent = text.slice(0, i);
+        i++;
+        setTimeout(step, speed);
+      } else {
+        el.classList.remove('typing');
+      }
+    })();
+  }
+  const typeTargets = document.querySelectorAll('.type-target');
+  const typeObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        typewriterReveal(entry.target);
+        typeObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  typeTargets.forEach(el => typeObserver.observe(el));
+
+  /* ============ REVELADO SUAVE (fade + subida) PARA TEXTOS SECUNDARIOS ============ */
+  const fadeTargets = document.querySelectorAll('.fade-reveal');
+  const fadeObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('in-view');
+        fadeObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  fadeTargets.forEach(el => fadeObserver.observe(el));
 
   /* ============ MUSIC TOGGLE ============ */
   const audio = document.getElementById('bg-audio');
@@ -672,17 +774,46 @@
   const formWrap = document.getElementById('rsvp-form-wrap');
   const successWrap = document.getElementById('rsvp-success');
   const successName = document.getElementById('success-name');
+  const whatsappLink = document.getElementById('whatsapp-link');
+
+  // Número del anfitrión (formato internacional, sin "+" ni espacios)
+  const WHATSAPP_NUMBER = '59173227139';
+
+  // Respaldo en memoria: guarda las confirmaciones mientras la página está
+  // abierta (se puede revisar en la consola del navegador con confirmedGuests).
+  // OJO: esto vive solo en el celular de cada invitado, no es una lista
+  // central que tú puedas ver — por eso el envío por WhatsApp de abajo es
+  // lo que realmente te avisa a ti en tiempo real.
   const confirmedGuests = [];
+  function saveGuestLocally(name){
+    confirmedGuests.push({ nombre: name, fecha: new Date().toISOString() });
+    console.log('Invitados confirmados en esta sesión:', confirmedGuests);
+  }
+
+  function buildWhatsAppLink(name){
+    const mensaje = `¡Hola! Soy ${name} y confirmo mi asistencia a los XV años de Luciana Greis el 24 de julio 🎉💜`;
+    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensaje)}`;
+  }
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     const name = document.getElementById('guest-name').value.trim();
     if(!name) return;
-    confirmedGuests.push(name);
+
+    saveGuestLocally(name);
+    const link = buildWhatsAppLink(name);
+    whatsappLink.setAttribute('href', link);
+
     successName.textContent = name;
     formWrap.classList.add('hidden');
     successWrap.classList.remove('hidden');
     launchConfetti();
+
+    // Espera a que se vea bien la mistura antes de mandar a WhatsApp.
+    // El botón de respaldo ya queda visible por si prefieren tocarlo antes.
+    setTimeout(() => {
+      window.open(link, '_blank');
+    }, 2800);
   });
 
   const canvas = document.getElementById('confetti-canvas');
