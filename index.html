@@ -30,15 +30,15 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="Mis XV Años - Luciana Greis">
 <meta property="og:description" content="Te invito a celebrar mis XV años el 24 de julio, 8:00 PM. ¡Confirma tu asistencia aquí! 💜">
-<meta property="og:image" content="https://TU-DOMINIO-AQUI.com/src/imguno.jpeg">
-<meta property="og:url" content="https://TU-DOMINIO-AQUI.com/">
+<meta property="og:image" content="https://15-valluno.vercel.app/src/buno.jpg">
+<meta property="og:url" content="https://15-valluno.vercel.app/">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Mis XV Años - Luciana Greis">
 <meta name="twitter:description" content="Te invito a celebrar mis XV años el 24 de julio, 8:00 PM. ¡Confirma tu asistencia aquí! 💜">
-<meta name="twitter:image" content="https://TU-DOMINIO-AQUI.com/src/imguno.jpeg">
+<meta name="twitter:image" content="https://15-valluno.vercel.app/src/buno.jpg">
 
-<link rel="icon" href="src/imguno.jpeg">
+<link rel="icon" href="src/buno.jpg">
 
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -379,10 +379,19 @@
     50%{box-shadow:0 0 25px rgba(192,38,212,0.35), inset 0 0 20px rgba(124,58,237,0.2), 0 0 0 7px rgba(244,114,182,0);}
   }
 
+  /* ===== EFECTO PARALLAX (fondos que se mueven al hacer scroll) ===== */
+  .parallax-bg{
+    position:absolute; inset:-12% -6%;
+    background-size:cover; background-position:center;
+    z-index:0; will-change:transform;
+  }
+  .parallax-img{ will-change:transform; }
+
   @media (prefers-reduced-motion: reduce){
     .light-wash, .balloon, .streamer, .heart-decor, .sparkle-decor, .star,
     .shimmer-text, .dotted-void, .btn-pulse, .digit-tick, .open-hint,
-    .fade-reveal, .live-dot, .cd-live-ring, .type-target.typing::after{ animation:none !important; }
+    .fade-reveal, .live-dot, .cd-live-ring, .type-target.typing::after,
+    .parallax-bg, .parallax-img{ animation:none !important; transform:none !important; }
   }
 
 </style>
@@ -444,11 +453,11 @@
 <!-- ================= HERO ================= -->
 <section class="relative min-h-screen bg-linear bglam flex flex-col items-center justify-center text-center px-6 overflow-hidden">
   <div class="light-wash"></div>
-  <div class="absolute bottom-0 w-full z-0 [mask-image:linear-gradient(to_top,black_30%,transparent_100%)]">
-    <img src="src/btres.jpg" class="w-full h-50" alt="imagen decorativa">
+  <div class="parallax-wrap absolute bottom-0 w-full z-0 [mask-image:linear-gradient(to_top,black_30%,transparent_100%)] overflow-hidden">
+    <img src="src/btres.jpg" class="parallax-img w-full h-50 object-cover" data-speed="22" alt="imagen decorativa">
   </div>
-  <div class="absolute top-0 w-full z-0 [mask-image:linear-gradient(to_bottom,black_50%,transparent_100%)]">
-    <img src="src/imguno.jpeg" class="w-full object-cover" alt="imagen decorativa">
+  <div class="parallax-wrap absolute top-0 w-full z-0 [mask-image:linear-gradient(to_bottom,black_50%,transparent_100%)] overflow-hidden">
+    <img src="src/imguno.jpeg" class="parallax-img w-full object-cover" data-speed="-18" alt="imagen decorativa">
   </div>
   <div class="overlay-dark"></div>
 
@@ -475,9 +484,10 @@
 
 <div class="divider-fringe"></div>
 <!-- ================= COUNTDOWN ================= -->
-<section class="relative min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 py-12 sm:py-16 text-center overflow-hidden" 
-         style="background-image: url('src/imgdos.jpg'); background-size: cover; background-position: center;">
-  
+<section class="relative min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 py-12 sm:py-16 text-center overflow-hidden">
+
+  <div class="parallax-bg" data-speed="30" style="background-image: url('src/imgdos.jpg');"></div>
+
   <!-- Superposición para oscurecer la imagen y asegurar legibilidad del texto -->
   <div class="absolute inset-0 bg-black/55 z-0"></div>
 
@@ -529,7 +539,7 @@
   <!-- NUEVO BLOQUE DE AGRADECIMIENTO (Estilo Glassmorphism) -->
   <div class="fade-reveal relative z-10 w-full max-w-lg mx-auto px-6 py-6 bg-black/40 backdrop-blur-sm border border-white/15 rounded-3xl text-white shadow-2xl">
     <p class="text-crisp text-sm md:text-lg italic font-medium mb-3">"Un agradecimiento infinito a mis papás y familia por su amor, apoyo incondicional y por hacer este sueño realidad."</p>
-    <p class="text-crisp text-sm text-fuchsia-100 font-semibold">Con amor, LUCIANA GREIS</p>
+    <p class="text-crisp text-sm text-fuchsia-100 font-semibold">Con amor, El valluno</p>
   </div>
 
 </section>
@@ -537,9 +547,9 @@
 <div class="divider-fringe"></div>
 
 <!-- ================= DETALLES ================= -->
-<section class="relative min-h-screen flex flex-col items-center justify-center px-4 py-16 overflow-hidden" 
-         style="background-image: url('src/imgcuatro.jpg'); background-size: cover; background-position: center;">
+<section class="relative min-h-screen flex flex-col items-center justify-center px-4 py-16 overflow-hidden">
 
+  <div class="parallax-bg" data-speed="25" style="background-image: url('src/imgcuatro.jpg');"></div>
   <div class="absolute inset-0 bg-black/55 z-0"></div>
 
   <p class="fade-reveal text-crisp relative z-10 tracking-[0.3em] text-[10px] text-yellow-300 uppercase mb-2">Detalles</p>
@@ -628,7 +638,7 @@
 </section>
 
 <footer class="relative py-10 text-center text-purple-300/40 text-xs tracking-widest uppercase">
-  Con amor, LUCIANA GREIS· Mis 15 años
+  Con amor, Valluno· Mis 15 años
 </footer>
 
 </div><!-- /invitation-content -->
@@ -804,6 +814,38 @@
   });
 
   /* ============ PARALLAX AL HACER SCROLL ============ */
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const parallaxBgs = document.querySelectorAll('.parallax-bg');
+  const parallaxImgs = document.querySelectorAll('.parallax-img');
+  let parallaxTicking = false;
+
+  function updateParallax(){
+    parallaxTicking = false;
+    const vh = window.innerHeight;
+    parallaxBgs.forEach(el => {
+      const speed = parseFloat(el.dataset.speed || 25);
+      const rect = el.parentElement.getBoundingClientRect();
+      const progress = (rect.top + rect.height / 2 - vh / 2) / vh; // -0.5..0.5 aprox al cruzar la pantalla
+      el.style.transform = `translateY(${progress * speed}px)`;
+    });
+    parallaxImgs.forEach(el => {
+      const speed = parseFloat(el.dataset.speed || 18);
+      const wrap = el.closest('.parallax-wrap') || el.parentElement;
+      const rect = wrap.getBoundingClientRect();
+      const progress = (rect.top + rect.height / 2 - vh / 2) / vh;
+      el.style.transform = `scale(1.14) translateY(${progress * speed}px)`;
+    });
+  }
+
+  if(!prefersReducedMotion && (parallaxBgs.length || parallaxImgs.length)){
+    window.addEventListener('scroll', () => {
+      if(!parallaxTicking){
+        parallaxTicking = true;
+        requestAnimationFrame(updateParallax);
+      }
+    }, { passive:true });
+    updateParallax();
+  }
 
   /* ============ RSVP + CONFETTI/SERPENTINA ============ */
   const form = document.getElementById('rsvp-form');
@@ -813,7 +855,7 @@
   const whatsappLink = document.getElementById('whatsapp-link');
 
   // Número del anfitrión (formato internacional, sin "+" ni espacios)
-  const WHATSAPP_NUMBER = '59173227139';
+  const WHATSAPP_NUMBER = '59170729580';
 
   // Respaldo en memoria: guarda las confirmaciones mientras la página está
   // abierta (se puede revisar en la consola del navegador con confirmedGuests).
